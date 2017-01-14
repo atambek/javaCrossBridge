@@ -1,30 +1,25 @@
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import javafx.animation.AnimationTimer;
-import javafx.animation.PathTransition;
 import javafx.scene.shape.Circle;
-import javafx.scene.Node;
-import java.awt.event.KeyListener;
-import java.util.Random;
+
 
 public class Main extends Application {
+    long lastUpdate;
+    long lastUpd;
+    private final static double refreshRate = Math.pow(10,1);
     Rectangle junction1;
     Rectangle junction2;
     Rectangle junction3;
     Rectangle junction4;
-    //Rectangle ruut;
-    Random timeGap;
-    double speed;
     GridPane myPlayground;
     int height = 8;
     int width = 14;
@@ -47,7 +42,6 @@ public class Main extends Application {
         startGameButton = new Button();
         startGameButton.setText("Start Game");
         startGameButton.setLayoutX(250);
-        ;
         startGameButton.setLayoutY(200);
         startGameButton.setPrefWidth(100);
         startGameButton.setPrefHeight(50);
@@ -71,10 +65,23 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent event) {
                 primaryStage.close();
-                setupPlayground();
-                setupGrid();
-                listenKeyboard();
-            }
+                PlayGround grid = new PlayGround();
+                //PlayGround.setupPlayground();
+                //setupGrid();
+                //PlayGround.listenKeyboard();
+                //AnimationTimer timer = new AnimationTimer() {
+                //    @Override
+                //    public void handle(long now) {
+                //        if (now - lastUpdate > (Math.pow(10, 9)) / refreshRate) {
+                //            lastUpdate = now;
+                //            addObject();
+                //            moveObject();
+                //            //setupNewGrid();
+                //        }
+                //    }
+                //};
+                //timer.start();
+                }
         });
 
         cancelButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -92,18 +99,23 @@ public class Main extends Application {
                 Rectangle square = new Rectangle(50, 50);
                 if ((i == 4) && (j == 2)) {
                     square.setFill(Color.YELLOW);
+                    square.setId("bridge");
                     junction1 = square;
                 } else if ((i == 9) && (j == 2)) {
                     square.setFill(Color.BLACK);
+                    square.setId("hole");
                     junction2 = square;
                 } else if ((i == 4) && (j == 5)) {
                     square.setFill(Color.BLACK);
+                    square.setId("hole");
                     junction3 = square;
                 } else if ((i == 9) && (j == 5)) {
                     square.setFill(Color.BLACK);
+                    square.setId("hole");
                     junction4 = square;
                 } else {
                     square.setFill(Color.BLUE);
+                    square.setId("regular");
                 }
                 square.setStroke(Color.RED);
 
@@ -120,52 +132,86 @@ public class Main extends Application {
         stage.show();
     }
 
-    private void createObject() {
-        Circle circle = new Circle(0, 0, 3, Color.YELLOW);
+    private void moveObject() {
+        Circle object = new Circle();
+        object.setFill(Color.RED);
+        object.setRadius(25);
+        object.setId("ring skip");
 
-    }
+        Rectangle object2 = new Rectangle(50, 50);
+        object2.setFill(Color.BLUE);
+        object2.setId("regular skip");
 
-    private void listenKeyboard() {
-        myPlayground.requestFocus();
-        myPlayground.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                if (event.getCode() == KeyCode.PAGE_UP) {
-                    //System.out.println("Klahv");
-                    //Rectangle ruut2 = (Rectangle) getNodeFromGridPane(4,2);
-                    //ruut2.setFill(Color.YELLOW);
-                    junction1.setFill(Color.YELLOW);
-                    junction2.setFill(Color.BLACK);
-                    junction3.setFill(Color.BLACK);
-                    junction4.setFill(Color.BLACK);
-                } else if (event.getCode() == KeyCode.PAGE_DOWN) {
-                    //System.out.println("Klahv");
-                    //Rectangle ruut2 = (Rectangle) getNodeFromGridPane(9, 2);
-                    //ruut2.setFill(Color.YELLOW);
-                    junction1.setFill(Color.BLACK);
-                    junction2.setFill(Color.YELLOW);
-                    junction3.setFill(Color.BLACK);
-                    junction4.setFill(Color.BLACK);
-                } else if (event.getCode() == KeyCode.LEFT) {
-                    //System.out.println("Klahv");
-                    //Rectangle ruut2 = (Rectangle) getNodeFromGridPane(4, 5);
-                    //ruut2.setFill(Color.YELLOW);
-                    junction1.setFill(Color.BLACK);
-                    junction2.setFill(Color.BLACK);
-                    junction3.setFill(Color.YELLOW);
-                    junction4.setFill(Color.BLACK);
-                } else if (event.getCode() == KeyCode.RIGHT) {
-                    //System.out.println("Klahv");
-                    //Rectangle ruut2 = (Rectangle) getNodeFromGridPane(9, 5);
-                    //ruut2.setFill(Color.YELLOW);
-                    junction1.setFill(Color.BLACK);
-                    junction2.setFill(Color.BLACK);
-                    junction3.setFill(Color.BLACK);
-                    junction4.setFill(Color.YELLOW);
+        for (Node element : myPlayground.getChildren()) {
+            if (element.getId().equals("ring")) {
+                int i = GridPane.getRowIndex(element);
+                int j = GridPane.getColumnIndex(element);
+                if (i == 1 || i == 4) {
+                    myPlayground.getChildren().remove(element);
+                    myPlayground.add(object2, j, i);
+                    myPlayground.add(object, j + 1, i);
                 }
             }
-        });
+        }
+        for (Node element2 : myPlayground.getChildren()) {
+            int i = GridPane.getRowIndex(element2);
+            int j = GridPane.getColumnIndex(element2);
+            if (i == 1 || i == 4) {
+                if (element2.getId().equals("ring skip")) {
+                    element2.setId("ring");
+                } else if (element2.getId().equals("regular skip")) {
+                    element2.setId("regular");
+                }
+            }
+        }
+    }
+
+    private void setupNewGrid () {
+        GridPane newPlayground = new GridPane();
+        Rectangle square = new Rectangle(50, 50);
+        square.setFill(Color.BLUE);
+        square.setId("regular");
+
+        Rectangle bridgesquare = new Rectangle(50, 50);
+        bridgesquare.setFill(Color.YELLOW);
+        bridgesquare.setId("bridge");
+
+        Rectangle holesquare = new Rectangle(50, 50);
+        holesquare.setFill(Color.BLACK);
+        holesquare.setId("hole");
+
+        Circle ring = new Circle();
+        ring.setFill(Color.RED);
+        ring.setId("ring");
+        for (Node element : myPlayground.getChildren()) {
+            int i = GridPane.getRowIndex(element);
+            int j = GridPane.getColumnIndex(element);
+            if (i == 1 || i == 4) {
+                if (element.getId().equals("regular")) {
+                    newPlayground.add(square, j + 1, i);
+                }
+                else if (element.getId().equals("ring")) {
+                    newPlayground.add(ring, j + 1, i);
+                }
+            }
+            else {
+                if (element.getId().equals("regular")) {
+                    newPlayground.add(square, j, i);
+                }
+                else if (element.getId().equals("hole")) {
+                    newPlayground.add(holesquare, j, i);
+                }
+                else {
+                    newPlayground.add(bridgesquare, j, i);
+                }
+            }
+        }
+
+        myPlayground.getChildren().removeAll();
+        myPlayground.getChildren().addAll(newPlayground);
     }
 }
+
+
 
 
