@@ -1,5 +1,6 @@
+import javafx.event.EventHandler;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
-
 import java.util.ArrayList;
 
 /**
@@ -10,30 +11,48 @@ public class Holes {
 
     public Holes() {
         for (int i = 0; i < 4; i++) {
+            System.out.println(i);
             if (i == 0) {
                 Hole hole = new Hole(4, 2, true);
+                holes.add(hole);
             }
-            if (i == 1) {
+            else if (i == 1) {
                 Hole hole = new Hole(9, 2, false);
+                holes.add(hole);
             }
-            if (i==2) {
+            else if (i==2) {
                 Hole hole = new Hole(4, 5, false);
+                holes.add(hole);
             }
-            if (i==3) {
+            else if (i==3) {
                 Hole hole = new Hole(9, 5, false);
+                holes.add(hole);
             }
         }
     }
+
     public Color getColor(int x, int y) {
-        for (int i = 0; i < holes.size(); i++) {
-            Hole hole = holes.get(i);
+        //System.out.println(holes.size());
+        for (int k = 0; k < 4; k++) {
+            //System.out.println(k);
+            Hole hole = holes.get(k);
             boolean filled = hole.getStatus(new int[]{x,y});
-            if (filled)
+            if (filled==true) {
+                //System.out.println("kollane");
                 return Color.YELLOW;
-            else
+            }
+            else if (filled == false)
                 return Color.BLACK;
         }
         return Color.BLUE;
     }
+    public void fillHole(int i) {
+        for (int j = 0; j < 4; j++) {
+            Hole hole = holes.get(j);
+            hole.emptyHole();
+        }
+        Hole hole = holes.get(i);
+        hole.fillHole();
 
+    }
 }
