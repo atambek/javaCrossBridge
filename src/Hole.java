@@ -7,24 +7,18 @@ import java.util.List;
  * Created by ant on 8.01.2017.
  */
 public class Hole {
-    //public ArrayList<int> holes;
-    public Hole(int idx) {
-        //holes = new ArrayList();
-        //if (idx == 0)
-        //    holes.add(1,4);
-        //else if (idx = 1)
-        //    holes.add(1,8);
-        //else if (idx ==2)
-        //    holes.add(4,4);
-        //else if (idx == 3)
-        //    holes.add(4,8);
+    private boolean isFilled;
+    public Hole(int x, int y, boolean filled) {
+        isFilled = filled;
     }
     public void fillHole(Hole hole){
-
+        isFilled = true;
     }
 
-    public boolean emptyHole(Hole hole){
-        return false; //siia tuleb midagi välja mõelda
+    public void emptyHole(){
+        isFilled = false;
     }
-
+    public boolean getStatus(int[] xy) {
+        return isFilled;
+    }
 }

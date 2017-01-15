@@ -66,27 +66,13 @@ public class Main extends Application {
             public void handle(ActionEvent event) {
                 primaryStage.close();
                 PlayGround grid = new PlayGround();
-                //PlayGround.setupPlayground();
-                //setupGrid();
-                //PlayGround.listenKeyboard();
-                //AnimationTimer timer = new AnimationTimer() {
-                //    @Override
-                //    public void handle(long now) {
-                //        if (now - lastUpdate > (Math.pow(10, 9)) / refreshRate) {
-                //            lastUpdate = now;
-                //            addObject();
-                //            moveObject();
-                //            //setupNewGrid();
-                //        }
-                //    }
-                //};
-                //timer.start();
-                }
+            }
         });
 
         cancelButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+
                 primaryStage.close();
             }
         });
@@ -98,23 +84,23 @@ public class Main extends Application {
             for (int j = 0; j < height; j++) {
                 Rectangle square = new Rectangle(50, 50);
                 if ((i == 4) && (j == 2)) {
-                    square.setFill(Color.YELLOW);
+                    //square.setFill(Color.YELLOW);
                     square.setId("bridge");
                     junction1 = square;
                 } else if ((i == 9) && (j == 2)) {
-                    square.setFill(Color.BLACK);
+                    //square.setFill(Color.BLACK);
                     square.setId("hole");
                     junction2 = square;
                 } else if ((i == 4) && (j == 5)) {
-                    square.setFill(Color.BLACK);
+                    //square.setFill(Color.BLACK);
                     square.setId("hole");
                     junction3 = square;
                 } else if ((i == 9) && (j == 5)) {
-                    square.setFill(Color.BLACK);
+                    //square.setFill(Color.BLACK);
                     square.setId("hole");
                     junction4 = square;
                 } else {
-                    square.setFill(Color.BLUE);
+                    //square.setFill(Color.BLUE);
                     square.setId("regular");
                 }
                 square.setStroke(Color.RED);
