@@ -1,11 +1,17 @@
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 
 /**
  * Created by ant on 8.01.2017.
  */
 public class MovingObject {
-    //Circle ring = new Circle();
+    private int[] coordinates;
+
+    public MovingObject (int x, int y) {
+        coordinates[0] = x;
+        coordinates[1] = y;
+    }
 
     public int addObject () {
         //Otsusta juhuslikkuse alusel, kas objekt üldse lisada
@@ -26,7 +32,7 @@ public class MovingObject {
     }
 
     public void moveObject () {
-
+        coordinates[0]++;
     }
 
     public void fall () {

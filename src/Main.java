@@ -13,17 +13,8 @@ import javafx.scene.shape.Circle;
 
 
 public class Main extends Application {
-    long lastUpdate;
-    long lastUpd;
     private final static double refreshRate = Math.pow(10,1);
-    Rectangle junction1;
-    Rectangle junction2;
-    Rectangle junction3;
-    Rectangle junction4;
     GridPane myPlayground;
-    int height = 8;
-    int width = 14;
-
     Button startGameButton;
     Button cancelButton;
 
@@ -79,45 +70,6 @@ public class Main extends Application {
 
     }
 
-    private void setupGrid() {
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                Rectangle square = new Rectangle(50, 50);
-                if ((i == 4) && (j == 2)) {
-                    //square.setFill(Color.YELLOW);
-                    square.setId("bridge");
-                    junction1 = square;
-                } else if ((i == 9) && (j == 2)) {
-                    //square.setFill(Color.BLACK);
-                    square.setId("hole");
-                    junction2 = square;
-                } else if ((i == 4) && (j == 5)) {
-                    //square.setFill(Color.BLACK);
-                    square.setId("hole");
-                    junction3 = square;
-                } else if ((i == 9) && (j == 5)) {
-                    //square.setFill(Color.BLACK);
-                    square.setId("hole");
-                    junction4 = square;
-                } else {
-                    //square.setFill(Color.BLUE);
-                    square.setId("regular");
-                }
-                square.setStroke(Color.RED);
-
-                myPlayground.add(square, i, j);
-            }
-        }
-    }
-
-    private void setupPlayground() {
-        myPlayground = new GridPane();
-        Scene scene = new Scene(myPlayground, 710, 410);
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.show();
-    }
-
     private void moveObject() {
         Circle object = new Circle();
         object.setFill(Color.RED);
@@ -150,51 +102,6 @@ public class Main extends Application {
                 }
             }
         }
-    }
-
-    private void setupNewGrid () {
-        GridPane newPlayground = new GridPane();
-        Rectangle square = new Rectangle(50, 50);
-        square.setFill(Color.BLUE);
-        square.setId("regular");
-
-        Rectangle bridgesquare = new Rectangle(50, 50);
-        bridgesquare.setFill(Color.YELLOW);
-        bridgesquare.setId("bridge");
-
-        Rectangle holesquare = new Rectangle(50, 50);
-        holesquare.setFill(Color.BLACK);
-        holesquare.setId("hole");
-
-        Circle ring = new Circle();
-        ring.setFill(Color.RED);
-        ring.setId("ring");
-        for (Node element : myPlayground.getChildren()) {
-            int i = GridPane.getRowIndex(element);
-            int j = GridPane.getColumnIndex(element);
-            if (i == 1 || i == 4) {
-                if (element.getId().equals("regular")) {
-                    newPlayground.add(square, j + 1, i);
-                }
-                else if (element.getId().equals("ring")) {
-                    newPlayground.add(ring, j + 1, i);
-                }
-            }
-            else {
-                if (element.getId().equals("regular")) {
-                    newPlayground.add(square, j, i);
-                }
-                else if (element.getId().equals("hole")) {
-                    newPlayground.add(holesquare, j, i);
-                }
-                else {
-                    newPlayground.add(bridgesquare, j, i);
-                }
-            }
-        }
-
-        myPlayground.getChildren().removeAll();
-        myPlayground.getChildren().addAll(newPlayground);
     }
 }
 

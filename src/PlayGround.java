@@ -1,6 +1,7 @@
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -18,15 +19,13 @@ public class PlayGround {
     Scene scene = new Scene(myPlayground, 710, 410);
     public static int gridHeight = 8;
     public static int gridWidth = 14;
-    public Rectangle junction1;
-    public Rectangle junction2;
-    public Rectangle junction3;
-    public Rectangle junction4;
 
     public PlayGround() {
         setupPlayground();
         holes = new Holes();
         renderGrid();
+        listenKeyboard();
+        handleMovingObjects();
     }
 
 
@@ -34,7 +33,6 @@ public class PlayGround {
         Stage stage = new Stage();
         stage.setScene(scene);
         stage.show();
-        System.out.println("andres");
         setupGrid();
     }
 
@@ -64,17 +62,21 @@ public class PlayGround {
         myPlayground.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                switch (event.getCode()) {
-                    case NUMPAD4:
-                        holes.fillHole(0);
-                    case NUMPAD5:
-                        holes.fillHole(1);
-                    case NUMPAD1:
-                        holes.fillHole(2);
-                    case NUMPAD2:
-                        holes.fillHole(3);
+                if (event.getCode() == KeyCode.NUMPAD4) {
+                    holes.fillHole(0);
+                } else if (event.getCode() == KeyCode.NUMPAD5) {
+                    holes.fillHole(1);
+                } else if (event.getCode() == KeyCode.NUMPAD1) {
+                    holes.fillHole(2);
+                } else if (event.getCode() == KeyCode.NUMPAD2) {
+                    holes.fillHole(3);
                 }
+                renderGrid();
             }
         });
+    }
+
+    public void handleMovingObjects() {
+
     }
 }

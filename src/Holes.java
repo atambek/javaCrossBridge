@@ -7,11 +7,10 @@ import java.util.ArrayList;
  * Created by ant on 8.01.2017.
  */
 public class Holes {
-    ArrayList<Hole> holes = new ArrayList();
+    ArrayList <Hole> holes = new ArrayList();
 
     public Holes() {
         for (int i = 0; i < 4; i++) {
-            System.out.println(i);
             if (i == 0) {
                 Hole hole = new Hole(4, 2, true);
                 holes.add(hole);
@@ -32,27 +31,26 @@ public class Holes {
     }
 
     public Color getColor(int x, int y) {
-        //System.out.println(holes.size());
-        for (int k = 0; k < 4; k++) {
-            //System.out.println(k);
+        for (int k = 0; k < holes.size(); k++) {
             Hole hole = holes.get(k);
-            boolean filled = hole.getStatus(new int[]{x,y});
-            if (filled==true) {
-                //System.out.println("kollane");
+            int filled = hole.getStatus(new int[]{x,y});
+            if (filled==1) {
                 return Color.YELLOW;
             }
-            else if (filled == false)
+            else if (filled == 0) {
                 return Color.BLACK;
+            }
         }
         return Color.BLUE;
     }
     public void fillHole(int i) {
         for (int j = 0; j < 4; j++) {
             Hole hole = holes.get(j);
-            hole.emptyHole();
-        }
-        Hole hole = holes.get(i);
-        hole.fillHole();
+            if (i==j)
+                hole.fillHole();
+            else
+                hole.emptyHole();
 
+        }
     }
 }
