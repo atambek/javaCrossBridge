@@ -34,4 +34,7 @@ public class Hole {
             return (coordinates[2]);
         return -1;
     }
+    public int[] getCoordinates() {
+        return coordinates;
+    }
 }

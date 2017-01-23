@@ -9,26 +9,9 @@ public class MovingObject {
     private int[] coordinates;
 
     public MovingObject (int x, int y) {
+        coordinates = new int[2];
         coordinates[0] = x;
         coordinates[1] = y;
-    }
-
-    public int addObject () {
-        //Otsusta juhuslikkuse alusel, kas objekt üldse lisada
-        int i = (int) (Math.random() * 1.2);
-        if (i == 1) {
-            return 0;
-        }
-
-        //Otsusta juhuslikkuse alusel, kas objekt lisada 1. või 2. tasandile
-        int level = (int) (Math.random() * 2);
-        if (level == 1) {
-            return 1;
-        }
-        else {
-            //myPlayground.add(object, 0, 4);
-            return 4;
-        }
     }
 
     public void moveObject () {
@@ -36,6 +19,10 @@ public class MovingObject {
     }
 
     public void fall () {
+        coordinates[1]++;
+    }
 
+    public int[] getCoordinates() {
+        return coordinates;
     }
 }

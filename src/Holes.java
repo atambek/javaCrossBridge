@@ -53,4 +53,15 @@ public class Holes {
 
         }
     }
+    public int[] getFilledHoleCoordinates () {
+        int[] coordinates;
+        for (int i = 0; i < 4; i++) {
+            Hole hole = holes.get(i);
+            coordinates = hole.getCoordinates();
+            if (coordinates[2] == 1)
+                return coordinates;
+
+        }
+        return coordinates = new int[2];
+    }
 }

@@ -7,25 +7,37 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-
 import java.util.ArrayList;
+import javafx.animation.AnimationTimer;
 
 /**
  * Created by ant on 8.01.2017.
  */
 public class PlayGround {
+    public long lastUpdate;
+    public double refreshRate = Math.pow(1.5,1);
     Holes holes;
     public GridPane myPlayground = new GridPane();
     Scene scene = new Scene(myPlayground, 710, 410);
     public static int gridHeight = 8;
     public static int gridWidth = 14;
+    public ArrayList<MovingObject> objects = new ArrayList();
 
     public PlayGround() {
         setupPlayground();
         holes = new Holes();
         renderGrid();
         listenKeyboard();
-        handleMovingObjects();
+        AnimationTimer timer = new AnimationTimer() { //start adding and moving the objects
+            @Override
+            public void handle(long now) {
+                if (now - lastUpdate > (Math.pow(10, 9)) / refreshRate) {
+                    lastUpdate = now;
+                    handleMovingObjects();
+                }
+            }
+        };
+        timer.start();
     }
 
 
@@ -41,12 +53,26 @@ public class PlayGround {
         for (int i = 0; i < gridWidth; i++) {
             for (int j = 0; j < gridHeight; j++) {
                 Color status = holes.getColor(i,j);
+                if (status == Color.BLUE) {
+                    status = getColor(i,j);
+                }
                 Rectangle square = new Rectangle(50,50,status);
                 square.setStroke(Color.RED);
                 myPlayground.add(square,i,j);
             }
         }
     }
+
+    public Color getColor(int x, int y) {
+        for (int k = 0; k < objects.size(); k++) {
+            MovingObject object = objects.get(k);
+            int[] coordinates = object.getCoordinates();
+            if (coordinates[0] == x && coordinates[1] == y)
+                return Color.RED;
+        }
+        return Color.BLUE;
+    }
+
     public void setupGrid() {
         for (int i = 0; i < gridWidth; i++) {
             for (int j = 0; j < gridHeight; j++) {
@@ -77,6 +103,39 @@ public class PlayGround {
     }
 
     public void handleMovingObjects() {
+        //System.out.println(objects.size());
 
+        //Liiguta olemasolevaid objekte
+        for (int i = 0; i < objects.size(); i++) {
+            MovingObject object = objects.get(i);
+            object.moveObject();
+            int[] coordinates = object.getCoordinates();
+            if (coordinates[0] == 4 || coordinates[0] == 9) {
+                int[] filledHoleCoordinates = holes.getFilledHoleCoordinates();
+                if (filledHoleCoordinates[0] != coordinates[0]) {
+                    object.fall();
+                }
+                else if (coordinates[1] != filledHoleCoordinates[1] - 1) {
+                    object.fall();
+                }
+            }
+        }
+
+        //Otsusta juhuslikkuse alusel, kas objekt üldse lisada
+        int j = (int) (Math.random() * 1.2);
+        System.out.println(j);
+        if (j == 1) {
+            //Otsusta juhuslikkuse alusel, kas objekt lisada 1. või 2. tasandile
+            int level = (int) (Math.random() * 2);
+            if (level == 1) {
+                MovingObject newObject = new MovingObject(0, 1);
+                objects.add(newObject);
+            }
+            else {
+                MovingObject newObject = new MovingObject(0, 4);
+                objects.add(newObject);
+            }
+        }
+        renderGrid();
     }
 }
