@@ -1,11 +1,14 @@
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import java.util.ArrayList;
 import javafx.animation.AnimationTimer;
@@ -14,6 +17,7 @@ import javafx.animation.AnimationTimer;
  * Created by ant on 8.01.2017.
  */
 public class PlayGround {
+    public int noOfLives = 3;
     public long lastUpdate;
     public double refreshRate = Math.pow(1.5,1);
     Holes holes;
@@ -114,9 +118,11 @@ public class PlayGround {
                 int[] filledHoleCoordinates = holes.getFilledHoleCoordinates();
                 if (filledHoleCoordinates[0] != coordinates[0]) {
                     object.fall();
+                    noOfLives--;
                 }
                 else if (coordinates[1] != filledHoleCoordinates[1] - 1) {
                     object.fall();
+                    noOfLives--;
                 }
             }
         }
@@ -137,5 +143,15 @@ public class PlayGround {
             }
         }
         renderGrid();
+        isGameOver();
+    }
+    public void isGameOver() {
+        if (noOfLives <= 0) {
+            StackPane stack = new StackPane();
+            Label message = new Label("Game Over");
+            message.setFont(Font.font("Arial Black",24));
+            stack.getChildren().add(message);
+            scene.setRoot(stack);
+        }
     }
 }
