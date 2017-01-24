@@ -1,9 +1,3 @@
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 /**
  * Created by ant on 8.01.2017.
  */

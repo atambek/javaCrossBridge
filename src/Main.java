@@ -1,20 +1,13 @@
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import javafx.scene.shape.Circle;
 
 
 public class Main extends Application {
-    private final static double refreshRate = Math.pow(10,1);
-    GridPane myPlayground;
     Button startGameButton;
     Button cancelButton;
 
@@ -67,41 +60,6 @@ public class Main extends Application {
                 primaryStage.close();
             }
         });
-
-    }
-
-    private void moveObject() {
-        Circle object = new Circle();
-        object.setFill(Color.RED);
-        object.setRadius(25);
-        object.setId("ring skip");
-
-        Rectangle object2 = new Rectangle(50, 50);
-        object2.setFill(Color.BLUE);
-        object2.setId("regular skip");
-
-        for (Node element : myPlayground.getChildren()) {
-            if (element.getId().equals("ring")) {
-                int i = GridPane.getRowIndex(element);
-                int j = GridPane.getColumnIndex(element);
-                if (i == 1 || i == 4) {
-                    myPlayground.getChildren().remove(element);
-                    myPlayground.add(object2, j, i);
-                    myPlayground.add(object, j + 1, i);
-                }
-            }
-        }
-        for (Node element2 : myPlayground.getChildren()) {
-            int i = GridPane.getRowIndex(element2);
-            int j = GridPane.getColumnIndex(element2);
-            if (i == 1 || i == 4) {
-                if (element2.getId().equals("ring skip")) {
-                    element2.setId("ring");
-                } else if (element2.getId().equals("regular skip")) {
-                    element2.setId("regular");
-                }
-            }
-        }
     }
 }
 

@@ -1,7 +1,3 @@
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
-
 /**
  * Created by ant on 8.01.2017.
  */

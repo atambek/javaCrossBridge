@@ -1,5 +1,3 @@
-import javafx.event.EventHandler;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import java.util.ArrayList;
 
@@ -62,6 +60,6 @@ public class Holes {
                 return coordinates;
 
         }
-        return coordinates = new int[2];
+        return new int[2];
     }
 }
